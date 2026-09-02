@@ -446,36 +446,9 @@ img {
   filter: drop-shadow(0 10px 12px rgba(70, 46, 24, 0.3));
 }
 
-/* 手写体标注：文字 + 虚线指向茶点 */
-.callout {
-  position: absolute;
-  display: flex;
-  align-items: center;
-  gap: 2px;
-  font-size: 12px;
-  letter-spacing: 1px;
-  color: #7d5f42;
-  white-space: nowrap;
-  transform: translateY(-50%);
-}
-
-/* 右侧标注：整体镜像到线的左边，文字贴住卡片右缘 */
-.callout-right {
-  transform: translate(-100%, -50%);
-  flex-direction: row-reverse;
-}
-
-.callout-line {
-  display: inline-block;
-  width: 34px;
-  border-top: 2px dotted #ad875c;
-  /* 左侧标注：线以靠近文字的一端为轴心旋转 */
-  transform-origin: left center;
-}
-
-.callout-right .callout-line {
-  /* 右侧标注：轴心换到靠近文字的一端（即线的右端） */
-  transform-origin: right center;
+/* 带标注的设计素材（已去背透明）：整幅展示，与米纸卡片底色自然融合 */
+.modal-figure img.is-card {
+  width: 100%;
 }
 
 /* ◆ 分隔线 */

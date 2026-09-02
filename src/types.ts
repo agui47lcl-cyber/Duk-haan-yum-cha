@@ -12,10 +12,11 @@ export type Dish = {
   fullName: string;    // 弹窗标题用的官方全名，例如 "薄皮鲜虾饺"
   category: DishCategory;
   asset: string;       // 图片路径（dimsums 目录已映射为站点根目录）
+  cardAsset?: string;  // 介绍卡视觉素材（带手写标注的设计图，可选；没有就用 asset）
   intro: string;       // 介绍卡文案（基于官方原文整理）
   notes: string[];     // 弹窗图片旁的 2~3 个标注短语
-  sourceUrl: string;   // 官方资料链接（政府网站）
-  sourceName: string;  // 来源名称，展示在链接旁
+  sourceUrl?: string;  // 官方资料链接（政府网站；暂未找到官方出处的茶点可省略）
+  sourceName?: string; // 来源名称，展示在链接旁
 };
 
 // 上桌状态：哪个茶点坐在第几个位置（order 从 0 开始）。
