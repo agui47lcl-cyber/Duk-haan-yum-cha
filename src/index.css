@@ -238,6 +238,8 @@ img {
   overflow-x: auto; /* 分类放不下时左右滑动 */
   scrollbar-width: none; /* 隐藏滚动条（Firefox） */
   -webkit-overflow-scrolling: touch; /* iOS 顺滑滚动 */
+  /* 边缘淡出遮罩由组件按滚动位置动态开关（见 MenuGrid.tsx），
+     滚到头的一侧不遮，避免第一个分类被白白吃掉一块 */
 }
 
 .filter-row::-webkit-scrollbar {
