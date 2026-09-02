@@ -24,25 +24,23 @@ export function MenuGrid({ dishes, isPlaced, isFull, onPlace, onRemove }: Props)
 
   return (
     <section className="menu-panel">
-      <h2 className="menu-title">
-        <i className="menu-title-line" aria-hidden="true" />
-        <span>早茶菜单</span>
-        <i className="menu-title-line" aria-hidden="true" />
-      </h2>
+      {/* 面板头部：左边标题、右边分类 chips，横向排列；chips 超宽时自身左右滑动 */}
+      <div className="menu-head">
+        <h2 className="menu-title">早茶菜单</h2>
 
-      {/* 分类筛选 chips：固定在面板顶部，不随列表滚动 */}
-      <div className="filter-row" role="tablist" aria-label="茶点分类筛选">
-        {FILTERS.map((f) => (
-          <button
-            key={f}
-            role="tab"
-            aria-selected={filter === f}
-            className={`filter-chip${filter === f ? ' active' : ''}`}
-            onClick={() => setFilter(f)}
-          >
-            {f}
-          </button>
-        ))}
+        <div className="filter-row" role="tablist" aria-label="茶点分类筛选">
+          {FILTERS.map((f) => (
+            <button
+              key={f}
+              role="tab"
+              aria-selected={filter === f}
+              className={`filter-chip${filter === f ? ' active' : ''}`}
+              onClick={() => setFilter(f)}
+            >
+              {f}
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* 可滚动区域：只有卡片列表在滚动 */}

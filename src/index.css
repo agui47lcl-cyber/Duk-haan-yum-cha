@@ -208,45 +208,53 @@ img {
   padding: 2px 2px calc(24px + env(safe-area-inset-bottom));
 }
 
-.menu-title {
+/* ---- 面板头部：标题 + 分类，左右结构 ---- */
+
+.menu-head {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 14px;
-  font-size: 25px;
-  font-weight: 700;
-  letter-spacing: 8px;
-  text-indent: 8px;
+  gap: 24px; /* 标题和分类之间固定 24px 间距 */
+  padding: 0 6px 12px; /* 面板自带 14px 内边距，合计左右约 20px */
+}
+
+.menu-title {
+  flex-shrink: 0; /* 标题固定不缩放 */
+  margin: 0;
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: 2px; /* 字距收紧（原来是 8px） */
+  text-indent: 2px;
   color: var(--ink);
 }
 
-.menu-title-line {
-  width: 64px;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, #b6935f);
-}
-
-.menu-title-line:last-child {
-  transform: scaleX(-1);
-}
-
-/* ---- 分类筛选 chips ---- */
+/* ---- 分类筛选 chips：超宽时横向滑动（保持原有大小和间距不变） ---- */
 
 .filter-row {
+  flex: 1; /* 占据标题右侧的全部剩余宽度 */
+  min-width: 0; /* 允许 flex 子项收缩到内容以下，激活横向滚动 */
   display: flex;
   gap: 10px;
   justify-content: flex-start;
-  margin: 16px 2px 14px;
+  overflow-x: auto; /* 分类放不下时左右滑动 */
+  scrollbar-width: none; /* 隐藏滚动条（Firefox） */
+  -webkit-overflow-scrolling: touch; /* iOS 顺滑滚动 */
+}
+
+.filter-row::-webkit-scrollbar {
+  display: none; /* 隐藏滚动条（Chrome/Safari） */
 }
 
 .filter-chip {
-  padding: 7px 20px;
+  flex-shrink: 0; /* 分类保持原有大小，不被压缩 */
+  width: 68px; /* 固定宽度，四个分类等宽 */
+  padding: 7px 0;
+  text-align: center;
   border-radius: 999px;
   border: 1px solid #d9c6a2;
   background: #f0e5cd;
   color: var(--ink-mid);
-  font-size: 15px;
-  letter-spacing: 2px;
+  font-size: 13px;
+  letter-spacing: 0; /* 小字号去掉字距：字距会在末尾多出一截空隙，导致文字看起来偏左 */
   transition: background 0.15s ease, color 0.15s ease;
 }
 
@@ -254,7 +262,7 @@ img {
   background: #5b3d26;
   border-color: #462e1d;
   color: #f6ead6;
-  box-shadow: 0 3px 8px rgba(70, 46, 29, 0.35);
+  /* 选中态只靠深底色区分，不再加投影 */
 }
 
 /* ---- 茶点卡片网格 ---- */
