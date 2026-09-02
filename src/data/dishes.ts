@@ -1,4 +1,4 @@
-import type { Dish, Seat } from '../types';
+import type { Dish } from '../types';
 
 /**
  * 首发茶点资料：共 8 款，全部基于广州市政府官网原文整理，
@@ -107,38 +107,34 @@ export const DISHES: Dish[] = [
 ];
 
 /**
- * 桌面固定八席：8 个茶点沿椭圆圆周均分（每格 45°），
- * 坐标按几何计算量取；zIndex 按 y 排，让靠下的茶点压住靠上的。
+ * 摆盘几何：所有茶点沿一个椭圆环均匀分布。
+ * 有几道菜就把 360° 均分成几份（3 道菜互成 120°，8 道菜互成 45°），
+ * 坐标用百分比表示，和桌子的显示尺寸解耦。
  */
-export const SEATS: Seat[] = [
-  { id: 'top', x: '50%', y: '14%', zIndex: 1 }, // 顶部正中
-  { id: 'upper-r', x: '71%', y: '23%', zIndex: 2 }, // 右上
-  { id: 'mid-r', x: '80%', y: '46%', zIndex: 3 }, // 右中
-  { id: 'lower-r', x: '71%', y: '68%', zIndex: 4 }, // 右下
-  { id: 'bottom', x: '50%', y: '77%', zIndex: 5 }, // 底部正中
-  { id: 'lower-l', x: '29%', y: '68%', zIndex: 4 }, // 左下
-  { id: 'mid-l', x: '20%', y: '46%', zIndex: 3 }, // 左中
-  { id: 'upper-l', x: '29%', y: '23%', zIndex: 2 }, // 左上
-];
+export const RING = {
+  cx: 50,   // 环心横坐标（桌面宽度的百分比）
+  cy: 45.5, // 环心纵坐标（桌面高度的百分比）
+  rx: 30,   // 横向半径
+  ry: 31.5, // 纵向半径
+};
+
+// 桌面最多同时上几道菜
+export const MAX_DISHES = 8;
 
 /**
- * 转桌轮换顺序：把八个席位按圆桌的环状排成一个圈，
- * 转桌时每个茶点移动到圈里的相邻席位，实现"2D 转桌"。
- * 顺序与 SEATS 的顺时针排列一致，首尾相连。
+ * 根据序号算出均分后的位置：
+ * index 为 0 的茶点固定在正上方，其余顺时针依次排开。
+ * zIndex 随"越靠下越靠前"变化，前面的茶点自然压住后面的。
  */
-export const SEAT_RING: string[] = [
-  'top',
-  'upper-r',
-  'mid-r',
-  'lower-r',
-  'bottom',
-  'lower-l',
-  'mid-l',
-  'upper-l',
-];
-
-// 桌面最大席位数量（与 SEATS / SEAT_RING 保持一致）
-export const SEAT_COUNT = SEAT_RING.length;
+export function ringPosition(index: number, count: number) {
+  const angle = -90 + (360 / count) * index;
+  const rad = (angle * Math.PI) / 180;
+  return {
+    x: RING.cx + RING.rx * Math.cos(rad),
+    y: RING.cy + RING.ry * Math.sin(rad),
+    zIndex: Math.round(50 + 50 * Math.sin(rad)),
+  };
+}
 
 // 菜单顶部的分类筛选（甜点素材待补，先保留入口）
 export const FILTERS = ['全部', '蒸点', '粥粉', '甜点'] as const;

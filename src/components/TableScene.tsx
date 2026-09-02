@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import type { Dish, PlacedDish } from '../types';
-import { SEATS } from '../data/dishes';
+import { ringPosition } from '../data/dishes';
 
 type Props = {
   dishes: Dish[];
@@ -48,8 +48,9 @@ export function TableScene({ dishes, placed, onRotate, onOpenDish }: Props) {
     if (Math.abs(drag.current.total) < 10) onOpenDish(dish);
   };
 
-  // 席位 id → 坐标信息，用来摆放每个茶点
-  const seatMap = new Map(SEATS.map((s) => [s.id, s]));
+  // 摆盘位置实时计算：当前有 count 道菜，就把圆周均分成 count 份，
+  // 每道菜按自己的序号坐进对应角度（上菜/下桌后所有人自动重新均分）
+  const count = placed.length;
 
   return (
     <div
@@ -63,15 +64,19 @@ export function TableScene({ dishes, placed, onRotate, onOpenDish }: Props) {
       <div className="table-surface">
         {/* ?v=2 用于强制刷新浏览器缓存（圆桌图更新过一版） */}
         <img className="table-img" src="/圆桌.png?v=2" alt="" draggable={false} aria-hidden="true" />
-        {placed.map(({ dishId, seatId }) => {
+        {placed.map(({ dishId, order }) => {
           const dish = dishes.find((d) => d.id === dishId);
-          const seat = seatMap.get(seatId);
-          if (!dish || !seat) return null;
+          if (!dish) return null;
+          const pos = ringPosition(order, count);
           return (
             <div
               key={dishId}
               className="table-dish"
-              style={{ left: seat.x, top: seat.y, zIndex: seat.zIndex }}
+              style={{
+                left: `${pos.x}%`,
+                top: `${pos.y}%`,
+                zIndex: pos.zIndex,
+              }}
             >
               <img
                 src={dish.asset}

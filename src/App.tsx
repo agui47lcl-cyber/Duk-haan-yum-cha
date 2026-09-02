@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 import type { Dish } from './types';
-import { DISHES, SEAT_COUNT } from './data/dishes';
+import { DISHES, MAX_DISHES } from './data/dishes';
 import { useTableState } from './hooks/useTableState';
 import { TableScene } from './components/TableScene';
 import { MenuGrid } from './components/MenuGrid';
@@ -27,7 +27,7 @@ export default function App() {
   // 上桌：点击当下就用最新状态判断是否坐满，坐满才提示
   const handlePlace = (dish: Dish) => {
     if (table.isFull || table.isPlaced(dish.id)) {
-      showToast(`桌上已坐满 ${SEAT_COUNT} 款茶点，先下桌一道吧`);
+      showToast(`桌上已坐满 ${MAX_DISHES} 款茶点，先下桌一道吧`);
       return;
     }
     table.placeDish(dish.id);

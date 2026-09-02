@@ -126,12 +126,27 @@ img {
   user-select: none;
 }
 
-/* 桌上的茶点：按席位百分比定位，转桌时平滑吸附（七席方案，略缩防重叠） */
+/* 桌上的茶点：按均分圆周的百分比定位，转桌/重新均分时平滑滑动 */
 .table-dish {
   position: absolute;
   width: 26%;
+  /* 先向上向左拉回自身的一半，让 left/top 百分比正好对准茶点中心 */
   transform: translate(-50%, -50%);
   transition: left 0.45s ease, top 0.45s ease;
+  /* 上菜入场：新上的菜从小到大弹出来（只在新元素挂载时播放一次） */
+  animation: dish-in 0.3s ease;
+}
+
+/* 上菜入场动画的关键帧 */
+@keyframes dish-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
 }
 
 .table-dish img {

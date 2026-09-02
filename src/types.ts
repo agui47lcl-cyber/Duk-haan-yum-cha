@@ -18,16 +18,10 @@ export type Dish = {
   sourceName: string;  // 来源名称，展示在链接旁
 };
 
-// 席位：桌面上一个固定的"座位"，用百分比坐标定位，与茶点无关
-export type Seat = {
-  id: string;
-  x: string;      // 距桌左侧的百分比，例如 "50%"
-  y: string;      // 距桌顶部的百分比
-  zIndex: number; // 层级：越靠前（越靠下）越高，前面的茶点压住后面的
-};
-
-// 上桌状态：哪个茶点坐在哪个席位，只是一个小小的对应关系
+// 上桌状态：哪个茶点坐在第几个位置（order 从 0 开始）。
+// 席位不再固定：摆盘位置由「当前桌上菜的数量」把圆周均分算出来，
+// 例如 3 道菜互成 120°、8 道菜互成 45°，下桌后剩下的菜自动重新均分。
 export type PlacedDish = {
   dishId: string;
-  seatId: string;
+  order: number;
 };
