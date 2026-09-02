@@ -181,24 +181,23 @@ img {
 
 /* ============ 转桌提示（紧跟在桌子下方） ============ */
 
-/* 桌下操作行：转桌提示居左、清桌按钮居右，整体在桌面正下方一排 */
+/* 桌下操作行：转桌提示相对整行居中，清桌图标绝对定位靠右，互不挤占 */
 .table-footer {
-  position: static;
+  position: relative; /* 作为清桌图标的定位基准 */
   z-index: 10;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 18px;
   /* 圆桌图片底部自带一圈透明留白，负 margin 把操作行往上提 10px 靠近桌沿 */
   margin: -10px 0 0;
 }
 
 .drag-hint {
-  /* 已改由 .table-footer 统一排布，这里只负责文字本身的样式 */
+  /* 始终居中于页面：由 .table-footer 的 justify-content 保证，图标不影响它 */
   position: static;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 4px; /* 箭头和文字紧凑一点 */
   margin: 0;
   font-size: 16px;
   font-weight: 500;
@@ -214,8 +213,12 @@ img {
   font-size: 19px;
 }
 
-/* 清桌按钮：棕色描边小胶囊，跟转桌提示并排；空桌时置灰不可点 */
+/* 清桌按钮：棕色描边小胶囊，固定在操作行最右侧（不影响提示居中）；空桌时置灰 */
 .clear-btn {
+  position: absolute;
+  right: 24px;
+  top: 50%;
+  transform: translateY(-50%);
   appearance: none;
   border: 1.5px solid #a5744a;
   border-radius: 999px;

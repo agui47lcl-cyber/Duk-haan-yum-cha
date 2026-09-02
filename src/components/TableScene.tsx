@@ -178,10 +178,10 @@ export function TableScene({ dishes, placed, onRotate, onOpenDish, onRemove, onC
         })}
       </div>
 
-      {/* 桌下操作行：转桌提示 + 清桌按钮（空桌时按钮置灰不可点） */}
+      {/* 桌下操作行：转桌提示始终居中，清桌按钮固定在最右侧 */}
       <div className="table-footer">
         <p className="drag-hint" aria-hidden="true">
-          <i>←</i> 左右拖动转桌 <i>→</i>
+          <i>←</i>左右拖动转桌<i>→</i>
         </p>
         <button
           type="button"
