@@ -141,7 +141,8 @@ export const DISHES: Dish[] = [
     name: '糯米鸡',
     fullName: '荷香糯米鸡',
     category: '粥粉',
-    asset: '/nuomiji.png',
+    asset: '/nuomiji.png?v=2', // ?v=2 强制刷新缓存（图更新为无背景版）
+    cardAsset: '/guangfu-dim-sum-cards/visual/nuomiji.png',
     intro:
       '荷香糯米鸡是茶市饭点的主角：糯米裹入鸡肉、叉烧、咸蛋黄、冬菇等丰富馅料，以荷叶包实蒸熟。揭盖瞬间荷香扑鼻，糯米绵软吸足馅汁，咸鲜油润，一份就能吃得心满意足。',
     notes: ['荷叶清香', '糯米绵软', '馅料丰盈'],
