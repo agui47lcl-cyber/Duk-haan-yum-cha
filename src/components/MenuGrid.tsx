@@ -13,8 +13,8 @@ type Props = {
 /**
  * MenuGrid：底部「早茶菜单」面板。
  * - 顶部四个筛选 chips：全部 / 蒸点 / 粥粉 / 甜点；
- * - 两列茶点卡片：已上桌显示"下桌"，未上桌显示"上桌"；
- * - 桌满后"上桌"按钮变灰（仍可点击，用于弹出提示）。
+ * - 两列茶点卡片：已上桌显示"执碟"，未上桌显示"上菜"；
+ * - 桌满后"上菜"按钮变灰（仍可点击，用于弹出提示）。
  */
 export function MenuGrid({ dishes, isPlaced, isFull, onPlace, onRemove }: Props) {
   // 当前选中的筛选分类，'全部' 时显示所有茶点
@@ -63,7 +63,7 @@ export function MenuGrid({ dishes, isPlaced, isFull, onPlace, onRemove }: Props)
                     aria-disabled={!onTable && isFull}
                     onClick={() => (onTable ? onRemove(dish.id) : onPlace(dish))}
                   >
-                    {onTable ? '下桌' : '上桌'}
+                    {onTable ? '执碟' : '上菜'}
                   </button>
                 </div>
               </div>

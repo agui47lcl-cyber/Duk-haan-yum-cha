@@ -97,7 +97,7 @@ export const DISHES: Dish[] = [
     name: '艇仔粥',
     fullName: '荔湾艇仔粥',
     category: '粥粉',
-    asset: '/tingzaizhou.png',
+    asset: '/tingzaizhou.png?v=2', // ?v=2 强制刷新缓存（艇仔粥图更新过一版）
     intro:
       '荔湾艇仔粥源自旧时荔枝湾的粥艇：疍家人摇橹卖粥，以河虾、鱼片等配料现煮滚制，热气腾腾、鲜甜可口，是广州粥品的代表。',
     notes: ['料足鲜甜', '绵滑粥底'],
@@ -107,31 +107,37 @@ export const DISHES: Dish[] = [
 ];
 
 /**
- * 桌面固定六席：坐标为百分比定位（相对桌面图容器），
- * 数值按参考设计图量取：后排高、前排低、左右收窄，zIndex 让前排压住后排。
+ * 桌面固定七席：7 个茶点沿椭圆圆周均分（每格约 51.4°），
+ * 坐标按几何计算量取，保证相邻茶点互不重叠。
+ * 顺序沿圆周顺时针：顶 → 右上 → 右中 → 右下 → 左下 → 左中 → 左上。
  */
 export const SEATS: Seat[] = [
-  { id: 'rear-c', x: '50%', y: '14%', zIndex: 1 }, // 后中（参考图：粥碗）
-  { id: 'rear-l', x: '19%', y: '31%', zIndex: 2 }, // 后左
-  { id: 'rear-r', x: '81%', y: '32%', zIndex: 2 }, // 后右
-  { id: 'front-l', x: '19%', y: '59%', zIndex: 3 }, // 前左
-  { id: 'front-r', x: '81%', y: '60%', zIndex: 3 }, // 前右
-  { id: 'front-c', x: '50%', y: '73%', zIndex: 4 }, // 前中（参考图：烧卖）
+  { id: 'top', x: '50%', y: '14%', zIndex: 1 }, // 顶部正中
+  { id: 'upper-r', x: '73%', y: '27%', zIndex: 2 }, // 右上
+  { id: 'mid-r', x: '79%', y: '53%', zIndex: 3 }, // 右中
+  { id: 'bottom-r', x: '63%', y: '74%', zIndex: 4 }, // 右下
+  { id: 'bottom-l', x: '37%', y: '74%', zIndex: 4 }, // 左下
+  { id: 'mid-l', x: '21%', y: '53%', zIndex: 3 }, // 左中
+  { id: 'upper-l', x: '27%', y: '27%', zIndex: 2 }, // 左上
 ];
 
 /**
- * 转桌轮换顺序：把六个席位按圆桌的环状排成一个圈，
+ * 转桌轮换顺序：把七个席位按圆桌的环状排成一个圈，
  * 转桌时每个茶点移动到圈里的相邻席位，实现"2D 转桌"。
- * 顺序：前中 → 前左 → 后左 → 后中 → 后右 → 前右 → 回到前中
+ * 顺序与 SEATS 的顺时针排列一致，首尾相连。
  */
 export const SEAT_RING: string[] = [
-  'front-c',
-  'front-l',
-  'rear-l',
-  'rear-c',
-  'rear-r',
-  'front-r',
+  'top',
+  'upper-r',
+  'mid-r',
+  'bottom-r',
+  'bottom-l',
+  'mid-l',
+  'upper-l',
 ];
+
+// 桌面最大席位数量（与 SEATS / SEAT_RING 保持一致）
+export const SEAT_COUNT = SEAT_RING.length;
 
 // 菜单顶部的分类筛选（甜点素材待补，先保留入口）
 export const FILTERS = ['全部', '蒸点', '粥粉', '甜点'] as const;
