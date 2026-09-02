@@ -44,7 +44,9 @@ img {
 
 .page {
   position: relative;
-  /* 高度锁定为一屏：菜单区域固定高度，超出内容在面板内滚动 */
+  /* 高度锁定为一屏：菜单区域固定高度，超出内容在面板内滚动
+     （dvh 是新内核增强，Chrome 61 等旧内核回退到 vh） */
+  height: 100vh;
   height: 100dvh;
   max-width: 430px;
   margin: 0 auto;
@@ -55,8 +57,8 @@ img {
   display: flex;
   flex-direction: column;
   background:
-    /* 竹影宣纸背景图（dimsums/背景.png），铺满裁切 */
-    url('/背景.png') top center / cover no-repeat,
+    /* 竹影宣纸背景图（dimsums/背景.png 压缩版 bg.webp），铺满裁切 */
+    url('/bg.webp') top center / cover no-repeat,
     /* 图片加载前的兜底底色 */
     linear-gradient(180deg, #f4ead6 0%, #efe2c9 52%, #e9dabd 100%);
   box-shadow: 0 0 40px rgba(87, 62, 36, 0.25);
@@ -74,7 +76,8 @@ img {
   align-items: center;
   justify-content: center;
   gap: 14px;
-  padding: 22px 0 0; /* 压缩标题与桌子的间距，贴近参考图构图 */
+  /* 标题+桌子整体下移 10px（原 22px），贴近参考图构图 */
+  padding: 32px 0 0;
 }
 
 .page-title h1 {
@@ -95,7 +98,10 @@ img {
 
 .table-scene {
   position: relative; /* 作为转桌提示的定位基准 */
-  padding: 10px 0 0;
+  /* 顶部间距收紧 10px（原 10px）：拉近标题与桌子的距离；
+     底部留 4px：给比操作行更高的"清桌"按钮留出空间，
+     避免它的下描边被 overflow: hidden 裁掉 */
+  padding: 0 0 4px;
   overflow: hidden; /* 桌子故意超宽出血，裁掉超出部分 */
   /* 禁掉浏览器的滚动/双指/长按等手势，转桌拖动全程归页面处理。
      iOS 上必须整块区域都禁，否则手指放在茶点图上会被浏览器抢占导致拖不动 */
@@ -110,6 +116,9 @@ img {
 .table-surface {
   position: relative;
   width: 110%;
+  /* 旧内核回退：固定高 → vh 分档 → min() 增强（新内核取更小值自动适配矮屏） */
+  height: 419px;
+  height: 45vh;
   height: min(419px, 45dvh);
   padding-right: 0;
   left: -5%;
@@ -247,7 +256,10 @@ img {
   flex: 1; /* 撑满页面剩余高度，保证面板通到屏幕底部 */
   display: flex;
   flex-direction: column;
-  /* 菜单区域保底占屏幕 40%（矮屏幕兜底 300px），不足时整页滚动 */
+  /* 菜单区域保底占屏幕 40%（矮屏幕兜底 300px），不足时整页滚动
+     （max()/dvh 为增强，旧内核逐级回退） */
+  min-height: 300px;
+  min-height: 40vh;
   min-height: max(300px, 40dvh);
   margin-top: 16px;
   background:
@@ -263,7 +275,9 @@ img {
   flex: 1;
   min-height: 0;
   overflow-y: auto;
-  padding: 2px 2px calc(24px + env(safe-area-inset-bottom));
+  /* 旧内核回退固定 24px 底距；env() 安全区为新内核增强（配合 var 兜底 0px） */
+  padding: 2px 2px 24px;
+  padding-bottom: calc(24px + var(--safe-area-inset-bottom, env(safe-area-inset-bottom, 0px)));
 }
 
 /* ---- 面板头部：标题 + 分类，左右结构 ---- */
@@ -354,9 +368,17 @@ img {
 
 .menu-card-img {
   width: 42%;
-  aspect-ratio: 1 / 1;
+  /* 旧内核回退固定高度；支持 aspect-ratio 的新内核用正方形比例自适应 */
+  height: 84px;
   object-fit: contain;
   filter: drop-shadow(0 4px 5px rgba(60, 40, 20, 0.3));
+}
+
+@supports (aspect-ratio: 1 / 1) {
+  .menu-card-img {
+    height: auto;
+    aspect-ratio: 1 / 1;
+  }
 }
 
 .menu-card-info {

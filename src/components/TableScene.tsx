@@ -141,8 +141,7 @@ export function TableScene({ dishes, placed, onRotate, onOpenDish, onRemove, onC
     >
       {/* 桌面本体：深木圆桌图（桌沿与转桌轨道圈都画在图里） */}
       <div className="table-surface">
-        {/* ?v=2 用于强制刷新浏览器缓存（圆桌图更新过一版） */}
-        <img className="table-img" src="/圆桌.png?v=2" alt="" draggable={false} aria-hidden="true" />
+        <img className="table-img" src="/table.webp" alt="" draggable={false} aria-hidden="true" />
         {placed.map(({ dishId, order }) => {
           const dish = dishes.find((d) => d.id === dishId);
           if (!dish) return null;

@@ -7,6 +7,14 @@ type Props = {
 };
 
 /**
+ * 是否运行在小红书小工具容器里：容器注入了 window.xhs.miniTool。
+ * 容器内纯离线、禁止打开外链，官方来源降级为纯文字；浏览器里仍是可点链接。
+ */
+const inMiniTool =
+  typeof window !== 'undefined' &&
+  !!(window as unknown as { xhs?: { miniTool?: unknown } }).xhs?.miniTool;
+
+/**
  * DishDetailModal：点击桌上茶点弹出的介绍卡。
  * - 米色卡片 + 大标题 + 茶点视觉图 + 介绍 + 官方来源链接；
  * - 视觉图优先用 cardAsset（带手写标注的设计素材），
@@ -51,12 +59,15 @@ export function DishDetailModal({ dish, onClose }: Props) {
 
         <p className="modal-intro">{dish.intro}</p>
 
-        {/* 官方来源：有出处的茶点才显示，保证有据可查 */}
-        {dish.sourceUrl && (
-          <a className="modal-source" href={dish.sourceUrl} target="_blank" rel="noreferrer">
-            查看官方资料 · {dish.sourceName}
-          </a>
-        )}
+        {/* 官方来源：有出处的茶点才显示。容器内禁止外链，降级为纯文字 */}
+        {dish.sourceUrl &&
+          (inMiniTool ? (
+            <span className="modal-source">资料来源 · {dish.sourceName}</span>
+          ) : (
+            <a className="modal-source" href={dish.sourceUrl} target="_blank" rel="noreferrer">
+              查看官方资料 · {dish.sourceName}
+            </a>
+          ))}
       </article>
     </div>
   );
