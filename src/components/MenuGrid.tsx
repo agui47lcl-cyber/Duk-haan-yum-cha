@@ -72,6 +72,7 @@ export function MenuGrid({ dishes, isPlaced, isFull, onPlace, onRemove }: Props)
               role="tab"
               aria-selected={filter === f}
               className={`filter-chip${filter === f ? ' active' : ''}`}
+              onMouseDown={(e) => e.preventDefault()} /* 阻止聚焦引发的自动滚动，避免分类行跳动 */
               onClick={() => setFilter(f)}
             >
               {f}

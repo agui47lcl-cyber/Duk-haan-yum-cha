@@ -258,6 +258,7 @@ img {
   font-size: 13px;
   letter-spacing: 0; /* 小字号去掉字距：字距会在末尾多出一截空隙，导致文字看起来偏左 */
   transition: background 0.15s ease, color 0.15s ease;
+  -webkit-tap-highlight-color: transparent; /* 去掉 iOS 点击时的灰色闪烁 */
 }
 
 .filter-chip.active {
