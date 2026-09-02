@@ -95,16 +95,22 @@ img {
 
 .table-scene {
   position: relative; /* 作为转桌提示的定位基准 */
-  padding: 10px 0 0; /* 顶部留 10px，桌子和提示整体下移 */
+  padding: 10px 0 0;
   overflow: hidden; /* 桌子故意超宽出血，裁掉超出部分 */
-  touch-action: pan-y; /* 只放行竖向滚动，横向拖动归转桌 */
+  /* 禁掉浏览器的滚动/双指/长按等手势，转桌拖动全程归页面处理。
+     iOS 上必须整块区域都禁，否则手指放在茶点图上会被浏览器抢占导致拖不动 */
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
 }
 
-/* 桌面容器：放大到超出屏幕左右边缘，还原参考图的"顶满出血"构图 */
+/* 桌面容器：放大到超出屏幕左右边缘，还原参考图的"顶满出血"构图；
+   高度用 min() 封顶，矮屏幕上自动缩一点，把空间让给菜单面板 */
 .table-surface {
   position: relative;
   width: 110%;
-  height: 419px; /* 固定桌面高度（覆盖 aspect-ratio 的计算值） */
+  height: min(419px, 45dvh);
   padding-right: 0;
   left: -5%;
 }
@@ -134,6 +140,10 @@ img {
   cursor: pointer;
   filter: drop-shadow(0 10px 9px rgba(0, 0, 0, 0.38));
   transition: filter 0.15s ease;
+  /* iOS 关键：图片默认 touch-action 是 auto，会绕过容器的手势禁用，
+     导致手指放在茶点上拖不动，这里显式关掉浏览器手势 */
+  touch-action: none;
+  -webkit-touch-callout: none;
 }
 
 /* 按住茶点时的金色光圈（对应参考图中烧卖的高亮效果） */
@@ -147,19 +157,18 @@ img {
   border-radius: 50%;
 }
 
-/* ============ 转桌提示（叠在桌面下沿上，与参考图一致） ============ */
+/* ============ 转桌提示（紧跟在桌子下方） ============ */
 
 .drag-hint {
-  position: absolute;
-  bottom: 3.5%;
-  left: 0;
-  right: 0;
+  /* 不再叠在桌面上，改为正常文档流排在桌子下方，任何屏幕高度都不会和桌沿粘连 */
+  position: static;
   z-index: 10;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
-  margin: 0;
+  /* 圆桌图片底部自带一圈透明留白，负 margin 把提示往上提 10px 靠近桌沿 */
+  margin: -10px 0 0;
   font-size: 16px;
   font-weight: 500;
   letter-spacing: 4px;
@@ -180,7 +189,8 @@ img {
   flex: 1; /* 撑满页面剩余高度，保证面板通到屏幕底部 */
   display: flex;
   flex-direction: column;
-  min-height: 300px; /* 太矮的屏幕下面板也保持可用，整页兜底滚动 */
+  /* 菜单区域保底占屏幕 40%（矮屏幕兜底 300px），不足时整页滚动 */
+  min-height: max(300px, 40dvh);
   margin-top: 16px;
   background:
     radial-gradient(100% 60% at 50% 0%, rgba(255, 250, 238, 0.75), transparent 70%),

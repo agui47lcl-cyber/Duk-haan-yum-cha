@@ -16,21 +16,25 @@ type Props = {
  * - 位移小于 10px 视为点击茶点，打开介绍卡。
  */
 export function TableScene({ dishes, placed, onRotate, onOpenDish }: Props) {
-  // 记录拖动过程的小账本：起点、位移量、是否已经触发过转桌
-  const drag = useRef({ startX: 0, distance: 0, rotated: false, pressing: false });
+  // 记录拖动过程的小账本：
+  // originX = 本轮按下时的起点（算总位移，用于区分点击）；
+  // anchorX = 转桌锚点（每转一格就重设，实现连续转桌）；
+  // total   = 手指离起点的总位移。
+  const drag = useRef({ originX: 0, anchorX: 0, total: 0, pressing: false });
 
   // 手指/鼠标按下：记住起点，重置本轮拖动记录
   const handlePointerDown = (e: React.PointerEvent) => {
-    drag.current = { startX: e.clientX, distance: 0, rotated: false, pressing: true };
+    drag.current = { originX: e.clientX, anchorX: e.clientX, total: 0, pressing: true };
   };
 
-  // 拖动中：一旦左右位移超过 42px 就转桌一次（每次按下最多转一格）
+  // 拖动中：每累计满 42px 就转一格并重设锚点，长拖可以连续转
   const handlePointerMove = (e: React.PointerEvent) => {
     if (!drag.current.pressing) return;
-    drag.current.distance = e.clientX - drag.current.startX;
-    if (!drag.current.rotated && Math.abs(drag.current.distance) > 42) {
-      onRotate(drag.current.distance < 0 ? 'left' : 'right');
-      drag.current.rotated = true;
+    drag.current.total = e.clientX - drag.current.originX;
+    const dx = e.clientX - drag.current.anchorX;
+    if (Math.abs(dx) > 42) {
+      onRotate(dx < 0 ? 'left' : 'right');
+      drag.current.anchorX = e.clientX;
     }
   };
 
@@ -41,7 +45,7 @@ export function TableScene({ dishes, placed, onRotate, onOpenDish }: Props) {
 
   // 点击茶点：只有几乎没拖动（<10px）才算点击，避免转桌时误开弹窗
   const handleDishClick = (dish: Dish) => {
-    if (Math.abs(drag.current.distance) < 10) onOpenDish(dish);
+    if (Math.abs(drag.current.total) < 10) onOpenDish(dish);
   };
 
   // 席位 id → 坐标信息，用来摆放每个茶点
