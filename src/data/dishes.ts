@@ -107,22 +107,22 @@ export const DISHES: Dish[] = [
 ];
 
 /**
- * 桌面固定七席：7 个茶点沿椭圆圆周均分（每格约 51.4°），
- * 坐标按几何计算量取，保证相邻茶点互不重叠。
- * 顺序沿圆周顺时针：顶 → 右上 → 右中 → 右下 → 左下 → 左中 → 左上。
+ * 桌面固定八席：8 个茶点沿椭圆圆周均分（每格 45°），
+ * 坐标按几何计算量取；zIndex 按 y 排，让靠下的茶点压住靠上的。
  */
 export const SEATS: Seat[] = [
   { id: 'top', x: '50%', y: '14%', zIndex: 1 }, // 顶部正中
-  { id: 'upper-r', x: '73%', y: '27%', zIndex: 2 }, // 右上
-  { id: 'mid-r', x: '79%', y: '53%', zIndex: 3 }, // 右中
-  { id: 'bottom-r', x: '63%', y: '74%', zIndex: 4 }, // 右下
-  { id: 'bottom-l', x: '37%', y: '74%', zIndex: 4 }, // 左下
-  { id: 'mid-l', x: '21%', y: '53%', zIndex: 3 }, // 左中
-  { id: 'upper-l', x: '27%', y: '27%', zIndex: 2 }, // 左上
+  { id: 'upper-r', x: '71%', y: '23%', zIndex: 2 }, // 右上
+  { id: 'mid-r', x: '80%', y: '46%', zIndex: 3 }, // 右中
+  { id: 'lower-r', x: '71%', y: '68%', zIndex: 4 }, // 右下
+  { id: 'bottom', x: '50%', y: '77%', zIndex: 5 }, // 底部正中
+  { id: 'lower-l', x: '29%', y: '68%', zIndex: 4 }, // 左下
+  { id: 'mid-l', x: '20%', y: '46%', zIndex: 3 }, // 左中
+  { id: 'upper-l', x: '29%', y: '23%', zIndex: 2 }, // 左上
 ];
 
 /**
- * 转桌轮换顺序：把七个席位按圆桌的环状排成一个圈，
+ * 转桌轮换顺序：把八个席位按圆桌的环状排成一个圈，
  * 转桌时每个茶点移动到圈里的相邻席位，实现"2D 转桌"。
  * 顺序与 SEATS 的顺时针排列一致，首尾相连。
  */
@@ -130,8 +130,9 @@ export const SEAT_RING: string[] = [
   'top',
   'upper-r',
   'mid-r',
-  'bottom-r',
-  'bottom-l',
+  'lower-r',
+  'bottom',
+  'lower-l',
   'mid-l',
   'upper-l',
 ];

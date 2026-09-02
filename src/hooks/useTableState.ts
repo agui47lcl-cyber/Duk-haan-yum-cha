@@ -8,14 +8,14 @@ import { SEAT_RING, SEAT_COUNT } from '../data/dishes';
  */
 export function useTableState() {
   // 当前已上桌的茶点列表（茶点 id + 所坐席位 id）
-  // 默认三款：粥坐顶部、虾饺坐左上、烧卖坐左下（与参考图气质一致）
+  // 默认三款：粥坐顶部、虾饺坐左上、烧卖坐底部
   const [placed, setPlaced] = useState<PlacedDish[]>([
     { dishId: 'tingzaizhou', seatId: 'top' },
     { dishId: 'xiajiao', seatId: 'upper-l' },
-    { dishId: 'shaomai', seatId: 'bottom-l' },
+    { dishId: 'shaomai', seatId: 'bottom' },
   ]);
 
-  // 桌上是否坐满（固定七席，席位数量以 SEAT_COUNT 为准）
+  // 桌上是否坐满（固定八席，席位数量以 SEAT_COUNT 为准）
   const isFull = placed.length >= SEAT_COUNT;
 
   // 查询某个茶点是否已上桌
