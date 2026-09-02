@@ -55,8 +55,9 @@ img {
   display: flex;
   flex-direction: column;
   background:
-    radial-gradient(120% 55% at 82% -4%, rgba(255, 246, 224, 0.9), transparent 62%),
-    radial-gradient(70% 34% at 6% 4%, rgba(184, 165, 118, 0.28), transparent 65%),
+    /* 竹影宣纸背景图（dimsums/背景.png），铺满裁切 */
+    url('/背景.png') top center / cover no-repeat,
+    /* 图片加载前的兜底底色 */
     linear-gradient(180deg, #f4ead6 0%, #efe2c9 52%, #e9dabd 100%);
   box-shadow: 0 0 40px rgba(87, 62, 36, 0.25);
 }
@@ -93,38 +94,32 @@ img {
 /* ============ 桌面场景 ============ */
 
 .table-scene {
-  padding: 4px 12px 0;
+  position: relative; /* 作为转桌提示的定位基准 */
+  padding: 0; /* 桌子全宽铺满，与参考图一致 */
   touch-action: pan-y; /* 只放行竖向滚动，横向拖动归转桌 */
 }
 
 .table-surface {
   position: relative;
   width: 100%;
-  aspect-ratio: 1 / 1.02;
-  border-radius: 50%;
-  background:
-    radial-gradient(circle at 34% 26%, rgba(255, 226, 178, 0.16), transparent 55%),
-    radial-gradient(circle at 50% 50%, var(--wood-mid) 0%, #43301f 62%, var(--wood-dark) 100%);
-  box-shadow:
-    inset 0 3px 8px rgba(255, 232, 190, 0.22),
-    inset 0 -10px 24px rgba(0, 0, 0, 0.42),
-    0 20px 44px rgba(58, 40, 24, 0.42);
-  overflow: hidden;
+  aspect-ratio: 1 / 1;
 }
 
-/* 桌面上的转桌轨道装饰圈 */
-.table-track {
+/* 深木圆桌图（dimsums/圆桌.png）：桌沿和转桌轨道圈都已画在图里 */
+.table-img {
   position: absolute;
-  inset: 22%;
-  border: 1.5px solid rgba(216, 180, 124, 0.32);
-  border-radius: 50%;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
   pointer-events: none;
+  user-select: none;
 }
 
 /* 桌上的茶点：按席位百分比定位，转桌时平滑吸附 */
 .table-dish {
   position: absolute;
-  width: 31%;
+  width: 29%;
   transform: translate(-50%, -50%);
   transition: left 0.45s ease, top 0.45s ease;
 }
@@ -148,22 +143,29 @@ img {
   border-radius: 50%;
 }
 
-/* ============ 转桌提示 ============ */
+/* ============ 转桌提示（叠在桌面下沿上，与参考图一致） ============ */
 
 .drag-hint {
+  position: absolute;
+  bottom: 3.5%;
+  left: 0;
+  right: 0;
+  z-index: 10;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
-  margin: 10px 0 2px;
+  margin: 0;
   font-size: 15px;
   letter-spacing: 3px;
-  color: #9a7748;
+  color: #c9a763;
+  text-shadow: 0 1px 3px rgba(30, 18, 8, 0.6);
+  pointer-events: none;
 }
 
 .drag-hint i {
   font-style: normal;
-  color: var(--gold);
+  color: #e0b96a;
   font-size: 17px;
 }
 

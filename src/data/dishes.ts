@@ -107,16 +107,16 @@ export const DISHES: Dish[] = [
 ];
 
 /**
- * 桌面固定六席：坐标为百分比定位，zIndex 让前排茶点压住后排，
- * 与实施计划中的坐标系保持一致。
+ * 桌面固定六席：坐标为百分比定位（相对桌面图容器），
+ * 数值按参考设计图量取：后排高、前排低、左右收窄，zIndex 让前排压住后排。
  */
 export const SEATS: Seat[] = [
-  { id: 'rear-c', x: '50%', y: '26%', zIndex: 1 }, // 后中
-  { id: 'rear-l', x: '20%', y: '40%', zIndex: 2 }, // 后左
-  { id: 'rear-r', x: '80%', y: '40%', zIndex: 2 }, // 后右
-  { id: 'front-l', x: '20%', y: '64%', zIndex: 3 }, // 前左
-  { id: 'front-c', x: '50%', y: '72%', zIndex: 4 }, // 前中
-  { id: 'front-r', x: '80%', y: '64%', zIndex: 3 }, // 前右
+  { id: 'rear-c', x: '50%', y: '14%', zIndex: 1 }, // 后中（参考图：粥碗）
+  { id: 'rear-l', x: '19%', y: '31%', zIndex: 2 }, // 后左
+  { id: 'rear-r', x: '81%', y: '32%', zIndex: 2 }, // 后右
+  { id: 'front-l', x: '19%', y: '59%', zIndex: 3 }, // 前左
+  { id: 'front-r', x: '81%', y: '60%', zIndex: 3 }, // 前右
+  { id: 'front-c', x: '50%', y: '73%', zIndex: 4 }, // 前中（参考图：烧卖）
 ];
 
 /**

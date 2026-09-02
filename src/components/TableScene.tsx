@@ -55,9 +55,10 @@ export function TableScene({ dishes, placed, onRotate, onOpenDish }: Props) {
       onPointerUp={handlePointerUp}
       onPointerCancel={handlePointerUp}
     >
-      {/* 桌面本体：圆木桌，带一圈转桌轨道装饰线 */}
+      {/* 桌面本体：深木圆桌图（桌沿与转桌轨道圈都画在图里） */}
       <div className="table-surface">
-        <div className="table-track" aria-hidden="true" />
+        {/* ?v=2 用于强制刷新浏览器缓存（圆桌图更新过一版） */}
+        <img className="table-img" src="/圆桌.png?v=2" alt="" draggable={false} aria-hidden="true" />
         {placed.map(({ dishId, seatId }) => {
           const dish = dishes.find((d) => d.id === dishId);
           const seat = seatMap.get(seatId);
@@ -78,6 +79,11 @@ export function TableScene({ dishes, placed, onRotate, onOpenDish }: Props) {
           );
         })}
       </div>
+
+      {/* 转桌提示：叠在桌面下沿，与参考图一致 */}
+      <p className="drag-hint" aria-hidden="true">
+        <i>←</i> 左右拖动转桌 <i>→</i>
+      </p>
     </div>
   );
 }

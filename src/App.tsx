@@ -42,13 +42,8 @@ export default function App() {
         <i className="diamond" aria-hidden="true">◆</i>
       </header>
 
-      {/* 深木圆桌 + 六席茶点 */}
+      {/* 深木圆桌 + 六席茶点（含转桌提示） */}
       <TableScene dishes={DISHES} placed={table.placed} onRotate={table.rotate} onOpenDish={setActiveDish} />
-
-      {/* 转桌操作提示 */}
-      <p className="drag-hint" aria-hidden="true">
-        <i>←</i> 左右拖动转桌 <i>→</i>
-      </p>
 
       {/* 早茶菜单面板 */}
       <MenuGrid
