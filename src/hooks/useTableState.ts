@@ -52,6 +52,11 @@ export function useTableState() {
   }, []);
 
   /**
+   * 清桌：一键撤走桌上全部茶点，桌面回到空盘状态。
+   */
+  const clearAll = useCallback(() => setPlaced([]), []);
+
+  /**
    * 转桌：所有菜沿圆桌挪一格（角度步长 = 360°/当前菜数）。
    * direction 为 'left' 时顺时针轮换、'right' 时逆时针轮换；
    * 茶点图片只平移，不旋转、不缩放。
@@ -68,5 +73,5 @@ export function useTableState() {
     });
   }, []);
 
-  return { placed, isFull, isPlaced, placeDish, removeDish, rotate };
+  return { placed, isFull, isPlaced, placeDish, removeDish, clearAll, rotate };
 }

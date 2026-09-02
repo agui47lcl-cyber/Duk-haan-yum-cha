@@ -132,9 +132,16 @@ img {
   width: 26%;
   /* 先向上向左拉回自身的一半，让 left/top 百分比正好对准茶点中心 */
   transform: translate(-50%, -50%);
-  transition: left 0.45s ease, top 0.45s ease;
+  transition: left 0.45s ease, top 0.45s ease, transform 0.15s ease;
   /* 上菜入场：新上的菜从小到大弹出来（只在新元素挂载时播放一次） */
   animation: dish-in 0.3s ease;
+}
+
+/* 茶点被"拿起"（长按成功）：放大 + 加深影子 + 快速跟手，示意可以往上拖撤菜 */
+.table-dish.lifted {
+  transform: translate(-50%, -50%) scale(1.12);
+  transition: transform 0.06s linear; /* 跟手要快，慢了就没有"拎着走"的感觉 */
+  filter: drop-shadow(0 14px 16px rgba(40, 24, 10, 0.45));
 }
 
 /* 上菜入场动画的关键帧 */
@@ -174,16 +181,25 @@ img {
 
 /* ============ 转桌提示（紧跟在桌子下方） ============ */
 
-.drag-hint {
-  /* 不再叠在桌面上，改为正常文档流排在桌子下方，任何屏幕高度都不会和桌沿粘连 */
+/* 桌下操作行：转桌提示居左、清桌按钮居右，整体在桌面正下方一排 */
+.table-footer {
   position: static;
   z-index: 10;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  /* 圆桌图片底部自带一圈透明留白，负 margin 把提示往上提 10px 靠近桌沿 */
+  gap: 18px;
+  /* 圆桌图片底部自带一圈透明留白，负 margin 把操作行往上提 10px 靠近桌沿 */
   margin: -10px 0 0;
+}
+
+.drag-hint {
+  /* 已改由 .table-footer 统一排布，这里只负责文字本身的样式 */
+  position: static;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
   font-size: 16px;
   font-weight: 500;
   letter-spacing: 4px;
@@ -196,6 +212,30 @@ img {
   font-style: normal;
   color: #a5744a;
   font-size: 19px;
+}
+
+/* 清桌按钮：棕色描边小胶囊，跟转桌提示并排；空桌时置灰不可点 */
+.clear-btn {
+  appearance: none;
+  border: 1.5px solid #a5744a;
+  border-radius: 999px;
+  background: rgba(246, 236, 215, 0.9);
+  color: #8a5a2e;
+  font-size: 14px;
+  letter-spacing: 2px;
+  line-height: 1.4;
+  padding: 4px 13px 4px 15px; /* 右侧少 2px 抵消字间距，视觉居中 */
+  font-family: inherit;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.clear-btn:active {
+  background: #8a5a2e;
+  color: #f6ecd7;
+}
+
+.clear-btn:disabled {
+  opacity: 0.35;
 }
 
 /* ============ 早茶菜单面板 ============ */

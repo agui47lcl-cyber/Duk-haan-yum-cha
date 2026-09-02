@@ -42,8 +42,15 @@ export default function App() {
         <i className="diamond" aria-hidden="true">◆</i>
       </header>
 
-      {/* 深木圆桌 + 七席茶点（含转桌提示） */}
-      <TableScene dishes={DISHES} placed={table.placed} onRotate={table.rotate} onOpenDish={setActiveDish} />
+      {/* 深木圆桌 + 均分茶点（含转桌提示、清桌按钮、长按上滑撤菜） */}
+      <TableScene
+        dishes={DISHES}
+        placed={table.placed}
+        onRotate={table.rotate}
+        onOpenDish={setActiveDish}
+        onRemove={table.removeDish}
+        onClearAll={table.clearAll}
+      />
 
       {/* 早茶菜单面板 */}
       <MenuGrid
